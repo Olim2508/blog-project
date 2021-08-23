@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+Home
+{% endblock %}
+
+
+{% block content %}
+
+    <h1 class="title">Latest Added Posts</h1>
+
+    <ul>
+        {% for post in post %}
+            <li>
+                <p class="title is-4 mb-2"><a href="{% url 'post_detail' post.pk %}">{{post.title}} </a> </p>   <span><b>Author : </b></span>{{post.author.first_name}}-- {{post.author.last_name}}  
+                <small><b> {{post.date|date:"SHORT_DATE_FORMAT"}}  ,{{post.date|time:"h:i a"}}</b> </small>
+                <br>
+                <p class="mt-2">{{post.body|slice:'0:200'|safe}}. . .  
+                {% if user.is_authenticated %}
+                    {% if user.id == post.author.id %}
+                        --<a href="{% url 'edit_post' post.pk %}">Edit</a>
+                        --<a href="{% url 'delete_post' post.pk %}">Delete</a>
+
+                    {% endif %}
+                {% endif %}
+                </p>
+                <br>
+                <br><br>
+            </li>
+            
+        {% endfor %}
+    </ul>
+
+
+
+{% endblock %}

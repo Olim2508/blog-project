@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Delete Comment
+{% endblock %}
+
+
+{% block content %}
+    <h1 class="title">Delete Comment</h1>
+    <form action="{% url 'delete_comment' comment.pk %} " method="POST">
+        {% csrf_token %}
+        <p class="title is-4">Do you really want to delete this Comment</p>
+        <button type="submit" class="button is-danger is-outlined">Delete</button>
+    </form>
+    
+
+    
+
+
+{% endblock %}

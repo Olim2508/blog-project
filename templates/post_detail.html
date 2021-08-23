@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+{{post.title}}
+{% endblock %}
+
+
+{% block content %}
+    <h1 class="title">{{post.title}} </h1>
+    <small><b> {{post.date|date:"SHORT_DATE_FORMAT"}}  ,{{post.date|time:"h:i a"}} </b></small>
+    {% if user.id == post.author.id %}
+        --<a href="{% url 'edit_post' post.pk %}">Edit</a>
+        --<a href="{% url 'delete_post' post.pk %}">Delete</a>
+    {% endif %}
+    <p>{{post.body|safe}} </p>
+    <br>
+    <hr>
+    <p class="title is-4">Comments:  {{post.comment_set.count}}</p>
+    {% if user.is_authenticated %}
+        <form action="{% url 'comment' post.pk %}" method="POST">
+            {% csrf_token %}
+            <textarea name="text" id="" class="textarea"></textarea>
+            <button class="button is-primary is-outlined mt-3">Comment</button>
+        </form>
+    {% else %}
+        <a href="{% url 'register' %}">Sign up</a> or <a href="{% url 'login' %}">Log in</a> to leave comments
+    {% endif %}
+    <hr>
+    {% for comment in post.comment_set.all %}
+        <article class="media">
+            <figure class="media-left">
+              <p class="image is-64x64">
+                <img src="{% static 'img/avatar.png' %}">
+              </p>
+            </figure>
+            <div class="media-content">
+              <div class="content">
+                <p>
+                  <strong>{{comment.user.username}} </strong>  <small>{{comment.date}}</small> 
+                  {% if request.user.id == comment.user.id %}
+                    {% if }
+                    <span><a onclick="delFunc()" >Delete</a></span>                  
+                    <a id="yes" onclick="noFunc()" href="{% url 'delete_comment' comment.pk %}"></a>
+                    <a id="no" onclick="noFunc()"></a>
+                  {% endif %}
+                  <br>
+                  {{comment.text}}
+                </p>
+              </div>
+              <!-- <nav class="level is-mobile">
+                <div class="level-left">
+                  <a class="level-item">
+                    <span class="icon is-small"><i class="fas fa-reply"></i></span>
+                  </a>
+                  <a class="level-item">
+                    <span class="icon is-small"><i class="fas fa-retweet"></i></span>
+                  </a>
+                  <a class="level-item">
+                    <span class="icon is-small"><i class="fas fa-heart"></i></span>
+                  </a>
+                </div>
+              </nav> -->
+            </div>
+            <!-- <div class="media-right">
+              <button class="delete"></button>
+            </div> -->
+          </article>
+    {% endfor %}
+
+
+{% endblock %}

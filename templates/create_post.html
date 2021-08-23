@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Create Post
+{% endblock %}
+
+
+{% block content %}
+    <h1 class="title">Create Post </h1>
+    {% if user.is_authenticated %}
+        <form action="{% url 'create_post' %}" method="POST">
+            
+            {% csrf_token %}
+            <!-- <div class="field">
+                <label class="label">Title</label>
+                <div class="control">
+                <input class="input" type="text" placeholder="Title" name="title">
+                </div>
+            </div>
+            <div class="field">
+                <label class="label">Text</label>
+                <div class="control">
+                <textarea class="textarea" placeholder="Text" name="body"></textarea>
+                </div>
+            </div>
+            
+            <div class="control">
+                <button class="button is-link" type="submit">Submit</button>
+            </div> -->
+            {{post.media}}
+            {{post.as_p}}
+            <div class="control">
+                <button class="button is-link mt-3" type="submit">Submit</button>
+            </div>
+        </form>
+    {%  else %}
+        <a href="{% url 'register' %}">Sign Up</a> or <a href="{% url 'login' %}">Log In</a> To Create A Blog
+    {% endif %}
+
+
+{% endblock %}
